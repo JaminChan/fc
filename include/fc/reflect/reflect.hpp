@@ -125,7 +125,7 @@ struct reflector_verifier_visitor {
 #else
   // Disable warning C4482: nonstandard extention used: enum 'enum_type::enum_value' used in qualified name
   #pragma warning( disable: 4482 )
-  #define FC_TEMPLATE
+  #define FC_TEMPLATE template
 #endif
 
 #define FC_REFLECT_VISIT_MEMBER( r, visitor, elem ) \
