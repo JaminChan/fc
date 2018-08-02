@@ -15,7 +15,7 @@ namespace fc
 {
    namespace detail { class exception_impl; }
 
-   enum exception_code
+   enum em_exception_code
    {
        /** for exceptions we threw that don't have an assigned code */
        unspecified_exception_code        = 0,
@@ -483,7 +483,7 @@ namespace fc
       FC_RETHROW_EXCEPTION( er, LOG_LEVEL, FORMAT, __VA_ARGS__ ); \
    } catch( const std::exception& e ) {  \
       fc::exception fce( \
-                FC_LOG_MESSAGE( LOG_LEVEL, "${what}: " FORMAT,__VA_ARGS__("what",e.what())), \
+                FC_LOG_MESSAGE( LOG_LEVEL, FORMAT,__VA_ARGS__), \
                 fc::std_exception_code,\
                 BOOST_CORE_TYPEID(e).name(), \
                 e.what() ) ; throw fce;\
