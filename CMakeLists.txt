@@ -34,7 +34,7 @@ MESSAGE(STATUS "Configuring fc to build on Unix/Apple")
 
 SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.so;.lib;.dll;")
 
-IF(NOT APPLE)
+IF(NOT APPLE AND NOT WIN32)
  # Linux or other unix
  SET(rt_library rt )
  SET(pthread_library pthread)
