@@ -25,15 +25,15 @@ else()
 
   find_path(GMP_INCLUDE_DIR
             NAMES gmp.h
-            HINTS ENV GMP_INC_DIR
-                  ENV GMP_DIR
+            HINTS ${GMP_INC_DIR}
+                  ${GMP_DIR}
             PATH_SUFFIXES include
   	        DOC "The directory containing the GMP header files"
            )
 
   find_library(GMP_LIBRARIES NAMES libgmp.a gmp.lib gmp libgmp-10 mpir
-    HINTS ENV GMP_LIB_DIR
-          ENV GMP_DIR
+    HINTS ${GMP_LIB_DIR}
+          ${GMP_DIR}
     PATH_SUFFIXES lib
     DOC "Path to the GMP library"
     )

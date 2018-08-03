@@ -14,6 +14,8 @@
 # include <windows.h>
 # include <userenv.h>
 # include <shlobj.h>
+#pragma comment(lib, "userenv.lib")
+#pragma comment(lib, "msvcrtd.lib")
 #else
   #include <sys/types.h>
   #include <sys/stat.h>

@@ -32,7 +32,7 @@ ENDIF( ECC_IMPL STREQUAL openssl )
 
 MESSAGE(STATUS "Configuring fc to build on Unix/Apple")
 
-SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.so")
+SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.so;.lib;.dll;")
 
 IF(NOT APPLE)
  # Linux or other unix
