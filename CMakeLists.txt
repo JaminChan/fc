@@ -120,7 +120,8 @@ set( sources
 list(APPEND sources ${fc_headers})
 
 setup_library( fc SOURCES ${sources} LIBRARY_TYPE STATIC DONT_INSTALL_LIBRARY )
-  
+
+set(ZLIB_USE_STATIC_RUNTIME ON CACHE STRING "ON or OFF" )  
 IF(APPLE)
   # As of 10.10 yosemite, the OpenSSL static libraries shipped with os x have a dependency
   # on zlib, so any time you link in openssl you also need to link zlib.  .  We really want to detect whether openssl was configured with the --no-zlib
@@ -131,9 +132,11 @@ ELSE(APPLE)
   find_package( ZLIB )
 ENDIF(APPLE)
 
+
 if( ZLIB_FOUND )
   MESSAGE( STATUS "zlib found" )
   add_definitions( -DHAS_ZLIB )
+  set( ZLIB_LIBRARIES "../../../externals/zlib-1.2.11/install/lib/zlibstaticd" )
 else()
   MESSAGE( STATUS "zlib not found" )
   set( ZLIB_LIBRARIES "" )
