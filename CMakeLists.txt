@@ -136,7 +136,7 @@ ENDIF(APPLE)
 if( ZLIB_FOUND )
   MESSAGE( STATUS "zlib found" )
   add_definitions( -DHAS_ZLIB )
-  set( ZLIB_LIBRARIES "../../../externals/zlib-1.2.11/install/lib/zlibstaticd" )
+  set( ZLIB_LIBRARIES "../../../externals/zlib-1.2.11/install/lib/zlibstatic" )
 else()
   MESSAGE( STATUS "zlib not found" )
   set( ZLIB_LIBRARIES "" )
@@ -167,7 +167,7 @@ ELSE()
   SET (OPENSSL_CONF_TARGET ${CMAKE_CURRENT_BINARY_DIR})
 ENDIF()
 
-add_subdirectory( test )
+#add_subdirectory( test )
 install(TARGETS fc
    LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
    ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR})
