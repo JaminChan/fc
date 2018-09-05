@@ -1643,6 +1643,10 @@ private:
 
     /// Whether or not this endpoint initiated the drop of the TCP connection
     bool                    m_dropped_by_me;
+	bool	                m_keepalive;
+public:
+	void set_keepalive(bool keepalive) { m_keepalive = keepalive; }
+	bool get_keepalive() { return m_keepalive; }
 };
 
 } // namespace websocketpp
