@@ -1423,7 +1423,16 @@ void connection<config>::handle_write_http_response(lib::error_code const & ec) 
             m_ec = make_error_code(error::http_connection_ended);
         }        
         
-        this->terminate(m_ec);
+		if (get_keepalive()) {
+			m_alog.write(log::alevel::devel, "next request");
+			m_request.reset();
+			m_response.reset();
+			m_internal_state = istate::READ_HTTP_REQUEST;
+			this->read_handshake(1);
+		}
+		else {
+			this->terminate(m_ec);
+		}
         return;
     }
 

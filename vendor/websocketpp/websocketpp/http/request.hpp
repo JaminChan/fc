@@ -55,6 +55,22 @@ public:
     request()
       : m_buf(lib::make_shared<std::string>())
       , m_ready(false) {}
+	  
+	void reset()
+	{
+		m_buf = lib::make_shared<std::string>();
+		m_ready = false;
+		m_uri.clear();
+		m_method.clear();
+		
+		//继承类parser
+		m_header_bytes = 0;
+		m_body_bytes_needed = 0;
+		m_body_encoding = body_encoding::unknown;
+		m_version.clear();
+		m_headers.clear();
+		m_body.clear();
+	}
 
     /// Process bytes in the input buffer
     /**

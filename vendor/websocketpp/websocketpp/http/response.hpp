@@ -64,6 +64,17 @@ public:
       , m_buf(lib::make_shared<std::string>())
       , m_status_code(status_code::uninitialized)
       , m_state(RESPONSE_LINE) {}
+	  
+	void reset() {
+		m_read = 0;
+		m_buf->clear();
+		m_status_code = status_code::uninitialized;
+		m_state = RESPONSE_LINE;
+
+		m_version.clear();
+		m_headers.clear();
+		set_body("");
+	}
 
     /// Process bytes in the input buffer
     /**
