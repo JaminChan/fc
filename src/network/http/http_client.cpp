@@ -15,7 +15,9 @@
 using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 namespace http = boost::beast::http;    // from <boost/beast/http.hpp>
 namespace ssl = boost::asio::ssl;       // from <boost/asio/ssl.hpp>
+#ifndef WIN32
 namespace local = boost::asio::local;
+#endif
 
 namespace fc {
 
@@ -32,8 +34,13 @@ public:
    using host_key = std::tuple<std::string, std::string, uint16_t>;
    using raw_socket_ptr = std::unique_ptr<tcp::socket>;
    using ssl_socket_ptr = std::unique_ptr<ssl::stream<tcp::socket>>;
+#ifndef WIN32
    using unix_socket_ptr = std::unique_ptr<local::stream_protocol::socket>;
    using connection = static_variant<raw_socket_ptr, ssl_socket_ptr, unix_socket_ptr>;
+#else
+   using connection = static_variant<raw_socket_ptr, ssl_socket_ptr>;
+#endif
+
    using connection_map = std::map<host_key, connection>;
    using unix_url_split_map = std::map<string, fc::url>;
    using error_code = boost::system::error_code;
@@ -157,7 +164,7 @@ public:
 
       return std::make_tuple(dest.proto(), *dest.host(), port);
    }
-
+#ifndef WIN32
    connection_map::iterator create_unix_connection( const url& dest, const deadline_type& deadline) {
       auto key = url_to_host_key(dest);
       auto socket = std::make_unique<local::stream_protocol::socket>(_ioc);
@@ -172,7 +179,7 @@ public:
 
       return res.first;
    }
-
+#endif
    connection_map::iterator create_raw_connection( const url& dest, const deadline_type& deadline ) {
       auto key = url_to_host_key(dest);
       auto socket = std::make_unique<tcp::socket>(_ioc);
@@ -220,9 +227,13 @@ public:
          return create_raw_connection(dest, deadline);
       } else if (dest.proto() == "https") {
          return create_ssl_connection(dest, deadline);
-      } else if (dest.proto() == "unix") {
+      } 
+#ifndef WIN32
+	  else if (dest.proto() == "unix") {
          return create_unix_connection(dest, deadline);
-      } else {
+      } 
+#endif
+	  else {
          FC_THROW("Unknown protocol ${proto}", ("proto", dest.proto()));
       }
    }
@@ -235,10 +246,11 @@ public:
       bool operator() ( const ssl_socket_ptr& ptr ) const {
          return !ptr->lowest_layer().is_open();
       }
-
+#ifndef WIN32
       bool operator() ( const unix_socket_ptr& ptr) const {
          return !ptr->is_open();
       }
+#endif
    };
 
    bool check_closed( const connection_map::iterator& conn_itr ) {
